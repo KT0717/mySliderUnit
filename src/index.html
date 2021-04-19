@@ -21,25 +21,37 @@
         <!-- スライダー -->
         <div class="slider-wrapper">
           <h5 class="mb-2">mySliderUnit</h5>
-          <div class="slider-main">
+          <div class="slider-main mb-1">
             <button type="button" id="prev" class="btn rounded-0">
               <img src="./assets/img/common/prev.svg" class="img arrow" alt="">
             </button>
             <!-- スライダーメイン画像 -->
-            <div id="mainImageBox" class="inner"></div>
+            <div id="main-image-box" class="inner"></div>
             <button type="button" id="next" class="btn rounded-0">
               <img src="./assets/img/common/next.svg" class="img arrow" alt="">
             </button>
           </div>
           <!-- スライダーサムネイル -->
           <div id="thumbnails" class="d-flex flex-wrap justify-content-center mb-2"></div>
-          <div class="mb-2">
-            <p id="play" class="btn btn-primary btn-sm">Play</p>
-          </div>
         </div>
       </div>
     </div>
   </main>
+  <!-- モーダル -->
+  <div class="modal-wrapper">
+    <img src="" alt="" class="modal-image">
+    <div class="modal-control d-flex justify-content-center w-100">
+      <button type="button" id="prev2" class="btn btn-lg">
+        <span class="text-white"><i class="fas fa-chevron-circle-left"></i></span>
+      </button>
+      <button type="button" id="close" class="btn btn-lg">
+        <span class="text-white">閉じる</span>
+      </button>
+      <button type="button" id="next2" class="btn btn-lg">
+        <span class="text-white"><i class="fas fa-chevron-circle-right"></i></span>
+      </button>
+    </div>
+  </div>
   <script type="text/javascript" src="assets/js/slider.js"></script>
 </body>
 

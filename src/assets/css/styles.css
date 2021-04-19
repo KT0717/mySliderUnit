@@ -94,7 +94,8 @@ a:hover {
   right: 0;
 }
 
-.slider-main img.mainImage {
+.slider-main img.main-image {
+  cursor: pointer;
   max-width: 100%;
   max-height: 100%;
   width: auto;
@@ -111,14 +112,18 @@ a:hover {
   height: 16px;
 }
 
-.thumbnail-wrapper {
+.thumbnail {
+  cursor: pointer;
+}
+
+.thumbnail-box {
   position: relative;
   height: 80px;
   width: 80px;
   overflow: hidden;
 }
 
-.thumbnail-wrapper img {
+.thumbnail-box img {
   max-width: 100%;
   max-height: 100%;
   width: auto;
@@ -130,12 +135,16 @@ a:hover {
   -webkit-transform: translateY(-50%) translateX(-50%);
 }
 
-.thumbnail-wrapper .thumbnail {
+.thumbnail-box:hover {
   opacity: 0.4;
 }
 
-.thumbnail-wrapper.current .thumbnail {
-  opacity: 1.0;
+.thumbnail-box.current {
+  opacity: 0.4;
+}
+
+.thumbnail-box.current .thumbnail {
+  cursor: inherit;
 }
 
 #prev,
@@ -162,6 +171,48 @@ a:hover {
 
 #next {
   right: 0;
+}
+
+/* モーダル */
+.modal-wrapper {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  transition: 0.25s ease-out;
+}
+
+.modal-wrapper.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-image {
+  position: absolute;
+  max-width: 80%;
+  max-height: 80%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  opacity: 0;
+  transition: 0.5s ease-out;
+}
+
+.modal-image.show {
+  opacity: 1;
+}
+
+.modal-control {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* 大デバイス（デスクトップ, 992px以上） */

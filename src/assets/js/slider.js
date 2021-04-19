@@ -12,95 +12,131 @@
     './assets/img/240240.jpg',
     './assets/img/512512.jpg',
     './assets/img/400400c.jpg',
-    // './assets/img/400400t.jpg',
   ];
 
   let currentIndex = 0;
 
-  const mainImageBox = document.getElementById('mainImageBox');
+  // メイン画像領域に画像をセット
+  const mainImageBox = document.getElementById('main-image-box');
   const img = document.createElement('img');
   img.src = images[currentIndex];
-  img.classList.add('mainImage');
+  img.classList.add('main-image');
+  img.setAttribute('data-src', img.src);
   mainImageBox.appendChild(img);
 
+  // 画像配列からサムネイルを生成
   images.forEach((image, index) => {
+    // サムネイル画像生成
     const img = document.createElement('img');
     img.classList.add('thumbnail');
     img.src = image;
-    const div = document.createElement('div');
-    div.classList.add('thumbnail-wrapper');
+    img.setAttribute('data-src', img.src);
+    // サムネイル画像Box生成
+    const thumbnailBox = document.createElement('div');
+    thumbnailBox.classList.add('thumbnail-box');
+    // 起動時は images[0] === 0
     if (index === currentIndex) {
-      div.classList.add('current');
+      thumbnailBox.classList.add('current');
     }
-    div.addEventListener('mouseover', () => {
+    // サムネイル画像をクリック
+    thumbnailBox.addEventListener('click', () => {
+      // forEach の image を代入
       img.src = image;
-      let mainImage = document.querySelector('.mainImage');
-      let thumbnailWrapper = document.querySelectorAll('.thumbnail-wrapper');
+      // メイン画像にセット
+      let mainImage = document.querySelector('.main-image');
       mainImage.setAttribute('src', img.src);
-      thumbnailWrapper[currentIndex].classList.remove('current');
+      mainImage.setAttribute('data-src', img.src);
+      // サムネイル画像にセット
+      let thumbnailElement = document.querySelectorAll('.thumbnail-box');
+      thumbnailElement[currentIndex].classList.remove('current');
       currentIndex = index;
-      thumbnailWrapper[currentIndex].classList.add('current');
+      thumbnailElement[currentIndex].classList.add('current');
     });
-    div.appendChild(img);
-    document.getElementById('thumbnails').appendChild(div);
+    // 下記が生成される
+    // <div class="thumbnail-box"><img class="thumbnail" src="xxx.jpg" data-src="xxx.jpg"></div>
+    thumbnailBox.appendChild(img);
+    // 親要素に挿入
+    document.getElementById('thumbnails').appendChild(thumbnailBox);
   });
 
-  let thumbnailWrapper = document.querySelectorAll('.thumbnail-wrapper');
+  // 戻る、進むボタン
+  let thumbnailElement = document.querySelectorAll('.thumbnail-box');
 
-  const prev = document.getElementById('prev');
-  prev.addEventListener('click', () => {
-    currentIndex--;
-    if (currentIndex < 0) {
-      currentIndex = images.length - 1;
-      thumbnailWrapper[0].classList.remove('current');
-      thumbnailWrapper[currentIndex].classList.add('current');
-    } else {
-      thumbnailWrapper[currentIndex + 1].classList.remove('current');
-      thumbnailWrapper[currentIndex].classList.add('current');
-    }
-    document.querySelectorAll('.thumbnail-wrapper')[currentIndex].click();
-    let mainImage = document.querySelector('.mainImage');
-    mainImage.setAttribute('src', images[currentIndex]);
-  });
-
-  const next = document.getElementById('next');
-  next.addEventListener('click', () => {
-    currentIndex++;
-    if (currentIndex > images.length - 1) {
-      currentIndex = 0;
-      thumbnailWrapper[images.length - 1].classList.remove('current');
-      thumbnailWrapper[currentIndex].classList.add('current');
-    } else {
-      thumbnailWrapper[currentIndex - 1].classList.remove('current');
-      thumbnailWrapper[currentIndex].classList.add('current');
-    }
-    document.querySelectorAll('.thumbnail-wrapper')[currentIndex].click();
-    let mainImage = document.querySelector('.mainImage');
-    mainImage.setAttribute('src', images[currentIndex]);
-  });
-
-  // スライダー再生停止ここから
-  let timeoutId;
-
-  function playSlideshow() {
-    timeoutId = setTimeout(() => {
-      next.click();
-      playSlideshow();
-    }, 1000);
+  function prevBtn(ele, target) {
+    ele.addEventListener('click', () => {
+      currentIndex--;
+      if (currentIndex < 0) {
+        currentIndex = images.length - 1;
+        thumbnailElement[0].classList.remove('current');
+        thumbnailElement[currentIndex].classList.add('current');
+      } else {
+        thumbnailElement[currentIndex + 1].classList.remove('current');
+        thumbnailElement[currentIndex].classList.add('current');
+      }
+      document.querySelectorAll('.thumbnail-box')[currentIndex].click();
+      // let mainImage = document.querySelector('.main-image');
+      target.setAttribute('src', images[currentIndex]);
+      target.setAttribute('data-src', img.src);
+    });
   }
 
-  let isPlaying = false;
+  function nextBtn(ele, target) {
+    ele.addEventListener('click', () => {
+      currentIndex++;
+      if (currentIndex > images.length - 1) {
+        currentIndex = 0;
+        thumbnailElement[images.length - 1].classList.remove('current');
+        thumbnailElement[currentIndex].classList.add('current');
+      } else {
+        thumbnailElement[currentIndex - 1].classList.remove('current');
+        thumbnailElement[currentIndex].classList.add('current');
+      }
+      document.querySelectorAll('.thumbnail-box')[currentIndex].click();
+      // let mainImage = document.querySelector('.main-image');
+      target.setAttribute('src', images[currentIndex]);
+      target.setAttribute('data-src', img.src);
+    });
+  }
 
-  const play = document.getElementById('play');
-  play.addEventListener('click', () => {
-    if (isPlaying === false) {
-      playSlideshow();
-      play.textContent = 'Pause';
-    } else {
-      clearTimeout(timeoutId);
-      play.textContent = 'Play';
-    }
-    isPlaying = !isPlaying;
-  });
+  let mainImage = document.querySelector('.main-image');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  prevBtn(prev, mainImage);
+  nextBtn(next, mainImage)
+
+  // モーダル表示ここから
+  function modal() {
+    // モーダル器
+    const modalWrapper = document.querySelector('.modal-wrapper');
+    const modalShowImage = document.querySelector('.modal-image');
+    // 現在表示されている画像
+    const mainImages = document.querySelectorAll('.main-image');
+    // 現在表示されている画像をクリック
+    mainImages.forEach(function (image) {
+      image.addEventListener('click', function () {
+        // モーダル表示
+        modalWrapper.classList.add('show');
+        modalShowImage.classList.add('show');
+        // 画像表示
+        var imageSrc = image.getAttribute('data-src');
+        modalShowImage.src = imageSrc;
+        // 戻る、進むボタン
+        const prev2 = document.getElementById('prev2');
+        const next2 = document.getElementById('next2');
+        prevBtn(prev2, modalShowImage);
+        prevBtn(next2, modalShowImage);
+      });
+    });
+    // 閉じる
+    const closeBtn = document.querySelector('#close');
+    closeBtn.addEventListener('click', function () {
+      if (modalWrapper.classList.contains('show')) {
+        modalWrapper.classList.remove('show');
+        modalShowImage.classList.remove('show');
+      }
+    });
+  }
+
+  modal();
 
 }
