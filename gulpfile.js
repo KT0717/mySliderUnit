@@ -6,6 +6,11 @@ var autoprefixer = require("autoprefixer");
 var browserSync = require('browser-sync').create();
 var gulpPlumber = require('gulp-plumber');
 var gulpNotify = require('gulp-notify');
+const sourcemaps = require('gulp-sourcemaps');
+const concat = require("gulp-concat");
+const uglify = require("gulp-uglify");
+const babel = require('gulp-babel');
+const rename = require('gulp-rename');
 
 // ソースディレクトリ
 var source = 'src/assets/';
@@ -17,10 +22,26 @@ var bootstrapSass = {
 
 //JavaScript ディレクトリ
 var js = {
-  'distDir': source + 'dist/',
-  'targetJs': source + 'js/script.js',
-  'watchJs': source + 'js/*'
+    'distDir': source + 'dist/',
+    'watchJs': source + 'js/*.js',
+    'ignore': !source + 'js/lib/*.js'
 }
+
+// javascript
+gulp.task('jsTask', function () {
+    return gulp
+        .src([
+            js.watchJs,
+            js.ignore,
+        ])
+        .pipe(concat('main.js'))
+        .pipe(babel({
+            presets: ["@babel/preset-env"]
+        }))
+        .pipe(uglify())
+        .pipe(rename('main.min.js'))
+        .pipe(gulp.dest(js.distDir));
+});
 
 // sass、css関連の変数を設定
 var sass = {
@@ -35,8 +56,35 @@ var sass = {
     }
 };
 
+// sassをコンパイルするタスク
+gulp.task('sass', function () {
+    // コンパイル対象のsassディレクトリを指定
+    return gulp
+        .src(sass.in)
+        // ソースマップ作成
+        .pipe(sourcemaps.init())
+        // コンパイルエラー時、エラーメッセージをデスクトップ通知
+        .pipe(gulpPlumber({
+            errorHandler: gulpNotify.onError("Error: <%= error.message %>")
+        }))
+        // コンパイル実行（sass->css）
+        .pipe(gulpSass(sass.sassOpts))
+        // ベンダープレフェックス付与
+        .pipe(gulpPostcss([autoprefixer()]))
+        // ソースマップ書き込み
+        .pipe(sourcemaps.write('./'))
+        // cssをcssディレクトリに出力
+        .pipe(gulp.dest(sass.out))
+        .pipe(browserSync.stream())
+        // コンパイル成功時、正常メッセージをデスクトップ通知
+        .pipe(gulpNotify({
+            message: 'Finished sass',
+            sound: false,
+        }));
+});
+
 // browser-syncの初期設定
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
             // browser-syncのコンテキストルートを指定
@@ -46,36 +94,13 @@ gulp.task('browser-sync', function() {
         startPath: 'index.html'
     });
 
-    // sassディレクトリを監視し、更新があれば自動コンパイルと修正したcssをブラウザに反映
+    // sass,JS,ディレクトリを監視し、更新があれば自動コンパイルしてブラウザに反映
     gulp.watch(sass.watch, gulp.series('sass'));
+    gulp.watch(js.watchJs, gulp.series('jsTask'));
     // htmlディレクトリ、jsディレクトリを監視し、更新があればブラウザをリロード
     gulp.watch(['src/' + '*html', source + 'css/*', source + 'js/*']).on('change', browserSync.reload);
 
 });
 
-// sassをコンパイルするタスク
-gulp.task('sass', function() {
-    // コンパイル対象のsassディレクトリを指定
-    return gulp.src(sass.in)
-        // コンパイルエラー時、エラーメッセージをデスクトップ通知
-        .pipe(gulpPlumber({
-            errorHandler: gulpNotify.onError("Error: <%= error.message %>")
-        }))
-        // コンパイル実行（sass->css）
-        .pipe(gulpSass(sass.sassOpts))
-        // ベンダープレフェックス付与
-        .pipe(gulpPostcss([autoprefixer()]))
-        // cssをcssディレクトリに出力
-        .pipe(gulp.dest(sass.out))
-        // cssをブラウザに反映する。（ブラウザのリロード無し）
-        .pipe(browserSync.stream())
-        // コンパイル成功時、正常メッセージをデスクトップ通知
-        .pipe(gulpNotify({
-            message: 'Finished sass.',
-            sound: false,
-        }));
-});
-
-// デフォルトタスク
-// sassタスク、browser-syncタスクを直列で実行
-gulp.task('default', gulp.series('sass', 'browser-sync'));
+// 各タスクを直列で実行
+gulp.task('default', gulp.series('sass', 'jsTask', 'browser-sync'));
