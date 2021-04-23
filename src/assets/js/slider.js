@@ -63,7 +63,7 @@
   let thumbnailElement = document.querySelectorAll('.thumbnail-box');
 
   function prevBtn(ele, target) {
-    ele.addEventListener('click', () => {
+    ele.addEventListener('click', (e) => {
       currentIndex--;
       if (currentIndex < 0) {
         currentIndex = images.length - 1;
@@ -77,11 +77,13 @@
       // let mainImage = document.querySelector('.main-image');
       target.setAttribute('src', images[currentIndex]);
       target.setAttribute('data-src', img.src);
+
+      e.stopPropagation();
     });
   }
 
   function nextBtn(ele, target) {
-    ele.addEventListener('click', () => {
+    ele.addEventListener('click', (e) => {
       currentIndex++;
       if (currentIndex > images.length - 1) {
         currentIndex = 0;
@@ -95,6 +97,8 @@
       // let mainImage = document.querySelector('.main-image');
       target.setAttribute('src', images[currentIndex]);
       target.setAttribute('data-src', img.src);
+
+      e.stopPropagation();
     });
   }
 
@@ -121,15 +125,15 @@
         var imageSrc = image.getAttribute('data-src');
         modalShowImage.src = imageSrc;
         // 戻る、進むボタン
-        const prev2 = document.getElementById('prev2');
-        const next2 = document.getElementById('next2');
-        prevBtn(prev2, modalShowImage);
-        prevBtn(next2, modalShowImage);
+        const modalImagePrev = document.getElementById('modal-image-prev');
+        const modalImageNext = document.getElementById('modal-image-next');
+        prevBtn(modalImagePrev, modalShowImage);
+        prevBtn(modalImageNext, modalShowImage);
       });
     });
     // 閉じる
     const closeBtn = document.querySelector('#close');
-    closeBtn.addEventListener('click', function () {
+    modalWrapper.addEventListener('click', function () {
       if (modalWrapper.classList.contains('show')) {
         modalWrapper.classList.remove('show');
         modalShowImage.classList.remove('show');

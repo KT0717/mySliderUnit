@@ -39,19 +39,22 @@
   </main>
   <!-- モーダル -->
   <div class="modal-wrapper">
-    <img src="" alt="" class="modal-image">
-    <div class="modal-control d-flex justify-content-center w-100">
-      <button type="button" id="prev2" class="btn btn-lg">
-        <span class="text-white"><i class="fas fa-chevron-circle-left"></i></span>
+    <div class="modal-inner">
+      <img src="" alt="" class="modal-image">
+      <button type="button" id="modal-image-prev" class="btn btn-lg">
+        <span class="text-white"><i class="fas fa-chevron-circle-left img-28"></i></span>
       </button>
+      <button type="button" id="modal-image-next" class="btn btn-lg">
+        <span class="text-white"><i class="fas fa-chevron-circle-right img-28"></i></span>
+      </button>
+    </div>
+    <div class="modal-control">
       <button type="button" id="close" class="btn btn-lg">
-        <span class="text-white">閉じる</span>
-      </button>
-      <button type="button" id="next2" class="btn btn-lg">
-        <span class="text-white"><i class="fas fa-chevron-circle-right"></i></span>
+        <span class="text-white"><i class="fas fa-times img-28"></i></span>
       </button>
     </div>
   </div>
+  <!-- script -->
   <script type="text/javascript" src="./assets/dist/main.min.js"></script>
 </body>
 

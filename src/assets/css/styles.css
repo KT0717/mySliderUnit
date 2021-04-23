@@ -70,6 +70,7 @@ a:hover {
   text-decoration: none !important;
 }
 
+/* スライダー */
 .slider-wrapper {
   max-width: 400px;
   margin: 0 auto;
@@ -149,7 +150,7 @@ a:hover {
 
 #prev,
 #next {
-  z-index: 9999;
+  z-index: 1000;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -180,7 +181,7 @@ a:hover {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 2000;
   background: rgba(0, 0, 0, 0.8);
   pointer-events: none;
   opacity: 0;
@@ -192,16 +193,30 @@ a:hover {
   pointer-events: all;
 }
 
+.modal-inner {
+  width: 100%;
+  max-width: 840px;
+  height: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .modal-image {
   position: absolute;
-  max-width: 80%;
-  max-height: 80%;
-  top: 50%;
+  max-width: 100%;
+  max-height: 100%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   object-fit: cover;
   opacity: 0;
   transition: 0.5s ease-out;
+}
+
+#modal-image-prev,
+#modal-image-next {
+  z-index: 2001;
 }
 
 .modal-image.show {
@@ -210,9 +225,8 @@ a:hover {
 
 .modal-control {
   position: absolute;
-  bottom: 5%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 16px;
+  right: 16px;
 }
 
 /* 大デバイス（デスクトップ, 992px以上） */
