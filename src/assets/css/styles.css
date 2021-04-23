@@ -248,7 +248,7 @@ a:hover {
   .modal-image {
     max-width: 100%;
     height: auto;
-}
+  }
 }
 
 /* 極小デバイス（縦向きモバイル, 576px 未満） */
@@ -260,8 +260,15 @@ a:hover {
 }
 
 /* タッチデバイスにおいてズームを防ぐ */
-a,area,button,[role="button"],input:not([type=range]),
-label,select,summary,textarea {
+a,
+area,
+button,
+[role="button"],
+input:not([type=range]),
+label,
+select,
+summary,
+textarea {
   -ms-touch-action: manipulation;
-      touch-action: manipulation;
+  touch-action: manipulation;
 }
