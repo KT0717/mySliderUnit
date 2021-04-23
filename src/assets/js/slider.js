@@ -2,16 +2,17 @@
 
 {
   const images = [
-    './assets/img/1.jpg',
-    './assets/img/2.jpg',
-    './assets/img/3.jpg',
-    './assets/img/4.jpg',
-    './assets/img/5.jpg',
-    './assets/img/6.jpg',
-    './assets/img/7.jpg',
-    './assets/img/8.jpg',
-    './assets/img/9.jpg',
-    './assets/img/10.jpg',
+    './assets/img/s1.jpg',
+    './assets/img/s2.jpg',
+    './assets/img/s3.jpg',
+    './assets/img/s4.jpg',
+    './assets/img/s5.jpg',
+    './assets/img/s6.jpg',
+    './assets/img/s7.jpg',
+    './assets/img/s8.jpg',
+    './assets/img/s9.jpg',
+    './assets/img/s10.jpg',
+    './assets/img/s11.jpg',
   ];
 
   let currentIndex = 0;

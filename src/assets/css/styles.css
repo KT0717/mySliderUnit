@@ -182,7 +182,7 @@ a:hover {
   top: 0;
   left: 0;
   z-index: 2000;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.9);
   pointer-events: none;
   opacity: 0;
   transition: 0.25s ease-out;
@@ -195,8 +195,8 @@ a:hover {
 
 .modal-inner {
   width: 100%;
-  max-width: 840px;
-  height: 80%;
+  max-width: 860px;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -205,8 +205,8 @@ a:hover {
 
 .modal-image {
   position: absolute;
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 720px;
+  max-height: 720px;
   left: 50%;
   transform: translateX(-50%);
   object-fit: cover;
@@ -226,12 +226,13 @@ a:hover {
 
 .modal-control {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 0px;
+  right: 0px;
 }
 
 .cnt {
   position: absolute;
+  bottom: 2%;
   left: 50%;
   transform: translateX(-50%);
 }
@@ -243,7 +244,12 @@ a:hover {
 @media (max-width: 991.98px) {}
 
 /* 小デバイス（横向きモバイル, 768px 未満） */
-@media (max-width: 767.98px) {}
+@media (max-width: 767.98px) {
+  .modal-image {
+    max-width: 100%;
+    height: auto;
+}
+}
 
 /* 極小デバイス（縦向きモバイル, 576px 未満） */
 @media (max-width: 575.98px) {}
