@@ -217,6 +217,7 @@ a:hover {
 #modal-image-prev,
 #modal-image-next {
   z-index: 2001;
+  height: 70%;
 }
 
 .modal-image.show {
@@ -227,6 +228,12 @@ a:hover {
   position: absolute;
   top: 16px;
   right: 16px;
+}
+
+.cnt {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 /* 大デバイス（デスクトップ, 992px以上） */
@@ -244,4 +251,11 @@ a:hover {
 /* IEハック */
 .col {
   flex: 1 0 auto;
+}
+
+/* タッチデバイスにおいてズームを防ぐ */
+a,area,button,[role="button"],input:not([type=range]),
+label,select,summary,textarea {
+  -ms-touch-action: manipulation;
+      touch-action: manipulation;
 }

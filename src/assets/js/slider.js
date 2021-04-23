@@ -2,16 +2,16 @@
 
 {
   const images = [
-    './assets/img/640480.jpg',
-    './assets/img/480480.jpg',
-    './assets/img/480640.jpg',
-    './assets/img/640640.jpg',
-    './assets/img/320240.jpg',
-    './assets/img/240320.jpg',
-    './assets/img/720480.jpg',
-    './assets/img/240240.jpg',
-    './assets/img/512512.jpg',
-    './assets/img/400400c.jpg',
+    './assets/img/1.jpg',
+    './assets/img/2.jpg',
+    './assets/img/3.jpg',
+    './assets/img/4.jpg',
+    './assets/img/5.jpg',
+    './assets/img/6.jpg',
+    './assets/img/7.jpg',
+    './assets/img/8.jpg',
+    './assets/img/9.jpg',
+    './assets/img/10.jpg',
   ];
 
   let currentIndex = 0;
@@ -51,6 +51,8 @@
       thumbnailElement[currentIndex].classList.remove('current');
       currentIndex = index;
       thumbnailElement[currentIndex].classList.add('current');
+      cuntNum();
+      console.log("サムネイル画像にセット" + (currentIndex + 1));
     });
     // 下記が生成される
     // <div class="thumbnail-box"><img class="thumbnail" src="xxx.jpg" data-src="xxx.jpg"></div>
@@ -77,8 +79,9 @@
       // let mainImage = document.querySelector('.main-image');
       target.setAttribute('src', images[currentIndex]);
       target.setAttribute('data-src', img.src);
-
+      cuntNum();
       e.stopPropagation();
+      console.log("戻るボタン" + (currentIndex + 1));
     });
   }
 
@@ -97,8 +100,9 @@
       // let mainImage = document.querySelector('.main-image');
       target.setAttribute('src', images[currentIndex]);
       target.setAttribute('data-src', img.src);
-
+      cuntNum();
       e.stopPropagation();
+      console.log("次へボタン" + (currentIndex + 1));
     });
   }
 
@@ -106,41 +110,51 @@
   const prev = document.getElementById('prev');
   const next = document.getElementById('next');
   prevBtn(prev, mainImage);
-  nextBtn(next, mainImage)
+  nextBtn(next, mainImage);
 
   // モーダル表示ここから
   function modal() {
+
     // モーダル器
     const modalWrapper = document.querySelector('.modal-wrapper');
-    const modalShowImage = document.querySelector('.modal-image');
+    const modalImage = document.querySelector('.modal-image');
+
     // 現在表示されている画像
     const mainImages = document.querySelectorAll('.main-image');
+
     // 現在表示されている画像をクリック
     mainImages.forEach(function (image) {
       image.addEventListener('click', function () {
         // モーダル表示
         modalWrapper.classList.add('show');
-        modalShowImage.classList.add('show');
+        modalImage.classList.add('show');
         // 画像表示
         var imageSrc = image.getAttribute('data-src');
-        modalShowImage.src = imageSrc;
-        // 戻る、進むボタン
-        const modalImagePrev = document.getElementById('modal-image-prev');
-        const modalImageNext = document.getElementById('modal-image-next');
-        prevBtn(modalImagePrev, modalShowImage);
-        prevBtn(modalImageNext, modalShowImage);
+        modalImage.src = imageSrc;
       });
     });
+
+    // 戻る、進むボタン
+    const modalPrev = document.getElementById('modal-image-prev');
+    const modalNext = document.getElementById('modal-image-next');
+    prevBtn(modalPrev, modalImage);
+    nextBtn(modalNext, modalImage);
+
     // 閉じる
-    const closeBtn = document.querySelector('#close');
     modalWrapper.addEventListener('click', function () {
       if (modalWrapper.classList.contains('show')) {
         modalWrapper.classList.remove('show');
-        modalShowImage.classList.remove('show');
+        modalImage.classList.remove('show');
       }
     });
-  }
 
+    cuntNum()
+  }
   modal();
+
+  function cuntNum() {
+    const cntImage = document.getElementById('cnt-image');
+    cntImage.innerHTML = `${1 + currentIndex} / ${images.length}`;
+  }
 
 }
